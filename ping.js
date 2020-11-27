@@ -20,15 +20,14 @@ let iteration = 0
 const requestHandler = (request, response) => {
     let queryData = url.parse(request.url, true).query;
     let success = 0;
-    let ret = ""
     let seconds = null
     let target = queryData.target
     if (target in outstandingPings) {
         outstandingPings[target].kill(9)
         console.error("killing outstanding ping for " + target)
-        delete outstandingPings[target]
     }
     outstandingPings[target] = child_process.exec(`ping -q -w5 -c1 "${target}"`, (err, stdout, stderr) => {
+        let ret = ""
         if (err) {
             ret += "# "+ err.toString().split("\n").join("\n# ") + "\n"
         } else {
@@ -46,7 +45,7 @@ const requestHandler = (request, response) => {
         ret += `# ${iteration} TYPE probe_success gauge\nprobe_success{instance="${target}"} ${1*!err}\n`
         response.writeHead(200, {'Content-Type': 'text/plain'});
         response.end(ret)
-        firstCallback = false
+        delete outstandingPings[target]
     })
 }
 
