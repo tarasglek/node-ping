@@ -18,11 +18,11 @@ function maybeErr(error, response, target) {
 let outstandingPings = {}
 let iteration = 0
 const requestHandler = (request, response) => {
-    var queryData = url.parse(request.url, true).query;
-    var success = 0;
-    ret = ""
-    var seconds = null
-    var target = queryData.target
+    let queryData = url.parse(request.url, true).query;
+    let success = 0;
+    let ret = ""
+    let seconds = null
+    let target = queryData.target
     if (target in outstandingPings) {
         outstandingPings[target].kill(9)
         console.error("killing outstanding ping for " + target)
@@ -32,7 +32,7 @@ const requestHandler = (request, response) => {
         if (err) {
             ret += "# "+ err.toString().split("\n").join("\n# ") + "\n"
         } else {
-            var ping = stdout.toString().split(" = ")[1].trim()
+            let ping = stdout.toString().split(" = ")[1].trim()
             if (!ping)
                 console.error(stdout)
             seconds = ping.split("/")[0]/1000.0
