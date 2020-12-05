@@ -26,7 +26,7 @@ const requestHandler = (request, response) => {
         outstandingPings[target].kill(9)
         console.error("killing outstanding ping for " + target)
     }
-    outstandingPings[target] = child_process.exec(`ping -q -w5 -c1 "${target}"`, (err, stdout, stderr) => {
+    outstandingPings[target] = child_process.exec(`ping -q -w1 -c1 "${target}"`, (err, stdout, stderr) => {
         let ret = ""
         if (err) {
             ret += "# "+ err.toString().split("\n").join("\n# ") + "\n"
